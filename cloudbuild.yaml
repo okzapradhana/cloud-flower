@@ -7,5 +7,7 @@ steps:
   args: ['-m', 'rsync', '-d', '-r', 'plugins', 'gs://${_GS_BUCKET}/plugins']
 - name: gcr.io/cloud-builders/gsutil
   args: ['-m', 'rsync', '-d', '-r', 'data', 'gs://${_GS_BUCKET}/data']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'rsync', '-d', '-r', 'dataflow-functions', 'gs://${_GS_BUCKET}/dataflow-functions']
 - name: ubuntu
   args: ['echo', 'cloud build is success!']
