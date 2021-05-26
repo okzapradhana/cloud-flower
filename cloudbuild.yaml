@@ -2,7 +2,7 @@ steps:
 - name: ubuntu
   args: ['echo', 'cloud build is running!']
 - name: gcr.io/cloud-builders/gsutil
-  args: ['-m', 'rsync', '-r', '--exclude', 'airflow_monitoring.py' 'dags', 'gs://${_GCS_BUCKET}/dags']
+  args: ['-m', 'rsync', '-r', '--exclude', 'airflow_monitoring.py', 'dags', 'gs://${_GCS_BUCKET}/dags']
 - name: gcr.io/cloud-builders/gsutil
   args: ['-m', 'rsync', '-d', '-r', 'plugins', 'gs://${_GCS_BUCKET}/plugins']
 - name: gcr.io/cloud-builders/gsutil
