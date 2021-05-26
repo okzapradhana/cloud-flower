@@ -2,12 +2,12 @@ steps:
 - name: ubuntu
   args: ['echo', 'cloud build is running!']
 - name: gcr.io/cloud-builders/gsutil
-  args: ['-m', 'rsync', '-d', '-r', 'dags', 'gs://${_GS_BUCKET}/dags']
+  args: ['-m', 'rsync', '-d', '-r', 'dags', 'gs://${_GCS_BUCKET}/dags']
 - name: gcr.io/cloud-builders/gsutil
-  args: ['-m', 'rsync', '-d', '-r', 'plugins', 'gs://${_GS_BUCKET}/plugins']
+  args: ['-m', 'rsync', '-d', '-r', 'plugins', 'gs://${_GCS_BUCKET}/plugins']
 - name: gcr.io/cloud-builders/gsutil
-  args: ['-m', 'rsync', '-d', '-r', 'data', 'gs://${_GS_BUCKET}/data']
+  args: ['-m', 'rsync', '-d', '-r', 'data', 'gs://${_GCS_BUCKET}/data']
 - name: gcr.io/cloud-builders/gsutil
-  args: ['-m', 'rsync', '-d', '-r', 'dataflow-functions', 'gs://${_GS_BUCKET}/dataflow-functions']
+  args: ['-m', 'rsync', '-d', '-r', 'dataflow-functions', 'gs://${_GCS_BUCKET}/dataflow-functions']
 - name: ubuntu
   args: ['echo', 'cloud build is success!']
