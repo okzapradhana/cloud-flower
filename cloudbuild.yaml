@@ -1,0 +1,11 @@
+steps:
+- name: ubuntu
+  args: ['echo', 'cloud build is running!']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'rsync', '-d', '-r', 'dags', 'gs://${_GS_BUCKET}/dags']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'rsync', '-d', '-r', 'plugins', 'gs://${_GS_BUCKET}/plugins']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'rsync', '-d', '-r', 'data', 'gs://${_GS_BUCKET}/data']
+- name: ubuntu
+  args: ['echo', 'cloud build is success!']
