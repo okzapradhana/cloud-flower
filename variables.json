@@ -1,0 +1,8 @@
+{
+  "PROJECT_ID": "",
+  "GCS_TEMP_LOCATION": "gs://",
+  "BUCKET_NAME": "",
+  "ALL_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.table_id",
+  "GCS_STG_LOCATION": "gs://",
+  "MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.another_table_id"
+}
