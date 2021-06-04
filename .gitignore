@@ -1,6 +1,9 @@
 #Google Service Account
 keyfile.json
 
+#Airflow Variables JSON
+variables.json
+
 #Output from Local Run Apache Beam
 outputs-*
 

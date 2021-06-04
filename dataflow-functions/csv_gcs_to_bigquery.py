@@ -73,7 +73,7 @@ def run(argv=None):
                                       schema=bq_table_schema,
                                       custom_gcs_temp_location=known_args.gcs_temp_location,
                                       create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-                                      write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE
+                                      write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
                                               )
             )
 

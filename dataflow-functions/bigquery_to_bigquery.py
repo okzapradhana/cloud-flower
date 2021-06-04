@@ -28,10 +28,56 @@ def run(argv=None):
   print("Source Table: ", source_table_spec)
   
   with beam.Pipeline(options=p_options) as pipeline:
+    bq_table_schema = {
+      "fields": [
+        {
+          "mode": "REQUIRED",
+          "name": "search_keyword",
+          "type": "STRING"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "created_date",
+          "type": "DATE"
+        },
+        {
+          "mode": "REQUIRED",
+          "name": "search_count",
+          "type": "INTEGER"
+        },
+      ]
+    }
+    
     output = ( pipeline 
-                | "Read data from BigQuery" >> beam.io.ReadFromBigQuery(table=source_table_spec)
-                | "Print read result" >> beam.Map(print)
+                | "Read data from BigQuery" >> beam.io.ReadFromBigQuery(
+                                  # table=source_table_spec,
+                                  query='WITH partitioned_keyword_search AS (' 
+                                          'SELECT '
+                                          'search_keyword,' 
+                                          'created_date,'
+                                          'COUNT(search_result_count) AS search_count,' 
+                                          'ROW_NUMBER() OVER(PARTITION BY created_date ORDER BY COUNT(search_result_count) DESC ) AS row_number ' \
+                                          'FROM blankspace_de_dwh.keyword_searches '
+                                          'GROUP BY created_date,search_keyword ) ' \
+
+                                        'SELECT ' 
+                                          'search_keyword,'
+                                          'created_date,'
+                                          'search_count ' \
+                                      'FROM partitioned_keyword_search pks '
+                                      'WHERE pks.row_number = 1 '
+                                      'ORDER BY pks.created_date'
+                                  ,
+                                  use_standard_sql=True)
+                # | "Print read result" >> beam.Map(print)
+                | "Write data to BigQuery" >> beam.io.WriteToBigQuery(
+                                      table=f'{known_args.project_id}:{known_args.output}',
+                                      schema=bq_table_schema,
+                                      custom_gcs_temp_location=known_args.gcs_temp_location,
+                                      create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+                                      write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
               )
+    )
 
 
 if __name__ == '__main__':
