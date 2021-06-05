@@ -1,6 +1,5 @@
 import apache_beam as beam
 import argparse
-from apache_beam.io.gcp.internal.clients import bigquery
 from apache_beam.options import pipeline_options
 
 def run(argv=None):
@@ -24,8 +23,6 @@ def run(argv=None):
                 staging_location=known_args.gcs_stg_location,
                 project=known_args.project_id
               )
-  source_table_spec = known_args.input
-  print("Source Table: ", source_table_spec)
   
   with beam.Pipeline(options=p_options) as pipeline:
     bq_table_schema = {
@@ -50,7 +47,6 @@ def run(argv=None):
     
     output = ( pipeline 
                 | "Read data from BigQuery" >> beam.io.ReadFromBigQuery(
-                                  # table=source_table_spec,
                                   query='WITH partitioned_keyword_search AS (' 
                                           'SELECT '
                                           'search_keyword,' 
@@ -69,14 +65,13 @@ def run(argv=None):
                                       'ORDER BY pks.created_date'
                                   ,
                                   use_standard_sql=True)
-                # | "Print read result" >> beam.Map(print)
                 | "Write data to BigQuery" >> beam.io.WriteToBigQuery(
                                       table=f'{known_args.project_id}:{known_args.output}',
                                       schema=bq_table_schema,
                                       custom_gcs_temp_location=known_args.gcs_temp_location,
                                       create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
                                       write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
-              )
+                  )
     )
 
 

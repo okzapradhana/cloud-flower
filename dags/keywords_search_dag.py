@@ -14,27 +14,15 @@ default_args = {
     'email': 'datokza@gmail.com',
 }
 
-BUCKET_NAME = (
-    os.environ.get('BUCKET_NAME') if os.environ.get('ENVIRONMENT') == 'production' is None
-    else Variable.get('BUCKET_NAME'))
-OUTPUT = (
-    os.environ.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE') if os.environ.get('ENVIRONMENT') == 'production' is None
-    else Variable.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE'))
+BUCKET_NAME = Variable.get('BUCKET_NAME')
+OUTPUT = Variable.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE')
 PY_FILE = (
     f'gs://{BUCKET_NAME}/dataflow-functions/csv_gcs_to_bigquery.py' if os.environ.get('ENVIRONMENT') == 'production'
     else f"{os.path.dirname(configuration.conf.get('core', 'dags_folder'))}/dataflow-functions/csv_gcs_to_bigquery.py")
-PROJECT_ID = (
-    os.environ.get('PROJECT_ID') if os.environ.get('ENVIRONMENT') == 'production' 
-    else Variable.get('PROJECT_ID'))
-GCS_TEMP_LOCATION = (
-    os.environ.get('GCS_TEMP_LOCATION') if os.environ.get('ENVIRONMENT') == 'production'
-    else Variable.get('GCS_TEMP_LOCATION'))
-GCS_STG_LOCATION = (
-    os.environ.get('GCS_STG_LOCATION') if os.environ.get('ENVIRONMENT') == 'production'
-    else Variable.get('GCS_STG_LOCATION'))
-INPUT_PATH = (
-    f'gs://{os.environ.get("BUCKET_BS_NAME")}' if os.environ.get('ENVIRONMENT') == 'production'
-    else f'gs://{BUCKET_NAME}/keyword-searches')
+PROJECT_ID = Variable.get('PROJECT_ID')
+GCS_TEMP_LOCATION = Variable.get('GCS_TEMP_LOCATION')
+GCS_STG_LOCATION = Variable.get('GCS_STG_LOCATION')
+INPUT_PATH = f'gs://{BUCKET_NAME}/keyword-searches'
 
 @dag(
     default_args=default_args, 
@@ -52,7 +40,7 @@ def keywords_search_dag():
     }
 
     dataflow_task = BeamRunPythonPipelineOperator(
-      task_id='process_keyword_search_csv_to_bigquery',
+      task_id='process_keyword_search_gcs_to_bigquery',
       runner='DataflowRunner',
       gcp_conn_id='google_cloud_default',
       py_file=PY_FILE,

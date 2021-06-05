@@ -67,14 +67,15 @@ def run(argv=None):
     output = ( pipeline 
               | "Read CSV file from GCS" >> beam.io.ReadFromText(file_pattern=known_args.input, skip_header_lines=1)
               | "Transform Data" >> beam.ParDo(RowTransformer(','))
-              # | "Print transformed data" >> beam.Map(print)
               | "Write data to BigQuery" >> beam.io.WriteToBigQuery(
                                       table=f'{known_args.project_id}:{known_args.output}',
                                       schema=bq_table_schema,
                                       custom_gcs_temp_location=known_args.gcs_temp_location,
                                       create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-                                      write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND
-                                              )
+                                      write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND,
+                                      additional_bq_parameters = {'timePartitioning': {
+                                          'type': 'DAY'
+                                      }})
             )
 
 if __name__ == '__main__':

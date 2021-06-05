@@ -12,24 +12,15 @@ default_args = {
     'email': 'datokza@gmail.com',
 }
 
-BUCKET_NAME = (
-    os.environ.get('BUCKET_NAME') if os.environ.get('ENVIRONMENT') == 'production' is None
-    else Variable.get('BUCKET_NAME'))
-OUTPUT = (
-    os.environ.get('MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE') if os.environ.get('ENVIRONMENT') == 'production' is None
-    else Variable.get('MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE'))
+BUCKET_NAME = Variable.get('BUCKET_NAME')
+OUTPUT = Variable.get('MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE')
 PY_FILE = (
     f'gs://{BUCKET_NAME}/dataflow-functions/bigquery_to_bigquery.py' if os.environ.get('ENVIRONMENT') == 'production'
     else f"{os.path.dirname(configuration.conf.get('core', 'dags_folder'))}/dataflow-functions/bigquery_to_bigquery.py")
-PROJECT_ID = (
-    os.environ.get('PROJECT_ID') if os.environ.get('ENVIRONMENT') == 'production' 
-    else Variable.get('PROJECT_ID'))
-GCS_TEMP_LOCATION = (
-    os.environ.get('GCS_TEMP_LOCATION') if os.environ.get('ENVIRONMENT') == 'production' 
-    else Variable.get('GCS_TEMP_LOCATION'))
-GCS_STG_LOCATION = (
-    os.environ.get('GCS_STG_LOCATION') if os.environ.get('ENVIRONMENT') == 'production' 
-    else Variable.get('GCS_STG_LOCATION'))
+
+PROJECT_ID = Variable.get('PROJECT_ID')
+GCS_TEMP_LOCATION = Variable.get('GCS_TEMP_LOCATION')
+GCS_STG_LOCATION = Variable.get('GCS_STG_LOCATION')
 KEYWORDS_BQ_TABLE = Variable.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE')
 INPUT_TABLE = f'{PROJECT_ID}:{KEYWORDS_BQ_TABLE}'
 
@@ -50,7 +41,7 @@ def most_searched_keyword_dag():
 
     dataflow_task = BeamRunPythonPipelineOperator(
       task_id='get_most_searched_keyword',
-      # runner='DataflowRunner',
+      runner='DataflowRunner',
       gcp_conn_id='google_cloud_default',
       py_file=PY_FILE,
       py_requirements=['apache-beam[gcp]==2.29.0'],
