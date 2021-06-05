@@ -101,3 +101,8 @@ Cloud Build is a CI/CD pipeline services in Google Cloud Platform. I used Cloud 
 ![cloud-build-config](images/Cloud%20Build%20Config.png)
 
 ## BigQuery Output Table
+This ETL process will produces 3 tables in BigQuery, which is:
+1. event
+2. keyword_searches
+3. most_searched_keywords
+![bq-output](images/BigQuery%20Output%20Table.png)
