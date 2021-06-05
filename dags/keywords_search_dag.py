@@ -1,6 +1,5 @@
 import os
 from airflow.decorators import dag
-from airflow.utils.dates import days_ago
 from airflow.providers.apache.beam.operators.beam import BeamRunPythonPipelineOperator
 from airflow.providers.google.cloud.operators.dataflow import DataflowConfiguration
 from airflow.operators.dummy import DummyOperator
@@ -28,7 +27,7 @@ INPUT_PATH = f'gs://{BUCKET_NAME}/keyword-searches'
     default_args=default_args, 
     schedule_interval='0 5 * * *', 
     start_date=datetime(2021, 3, 10), 
-    end_date=datetime(2021, 3, 15), 
+    end_date=datetime(2021, 3, 16), 
     tags=['dataflow-job']
 )
 def keywords_search_dag():
@@ -40,7 +39,7 @@ def keywords_search_dag():
     }
 
     dataflow_task = BeamRunPythonPipelineOperator(
-      task_id='process_keyword_search_gcs_to_bigquery',
+      task_id='job_process_keyword_search_gcs_to_bigquery',
       runner='DataflowRunner',
       gcp_conn_id='google_cloud_default',
       py_file=PY_FILE,
