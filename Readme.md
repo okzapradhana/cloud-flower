@@ -38,12 +38,33 @@ Here is how to setup the environment:
    - Python Version: 3
    - Cloud SQL machine type: db-n1-standard-2
    - Web server machine type: db-n1-standard-2
-6. Then, click the **CREATE** button
-7. Note that you will need to wait for some minutes until the environment successfully created.
+6. Fill the Environment Variable with
+   - ENVIRONMENT: production
+7. Then, click the **CREATE** button
+8. Note that you will need to wait for some minutes until the environment successfully created.
 ![composer-env](/images/Composer%20Env%20Config.png)
 
 After the environment has been created successfully you will see like this:
 ![composer-env-success](/images/After%20Success%20Create%20Env.png)
+
+### Airflow webserver on Composer
+After the environment successfully created from the previous steps. Now its time to access the airflow web page. Here are the steps:
+1. Click the **Airflow webserver link** in Composer Environments list. This will open airflow web page that same as we opened http://localhost:8080 if we using Local Airflow.
+2. Create `json` file on your project that stores Airflow variables. Lets call it `variables.json`. The minimum key-value of its file must contains this:
+   ```js
+    {
+      "PROJECT_ID": "",
+      "GCS_TEMP_LOCATION": "gs://..../tmp",
+      "BUCKET_NAME": "",
+      "ALL_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.table_id",
+      "GCS_STG_LOCATION": "gs://....../staging",
+      "MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.table_id",
+      "EVENTS_BQ_TABLE": "dataset_id.table_id"
+    }
+   ```
+3. Go to **Admin > Variables**
+4. **Choose File** then click **Import Variables**
+![airflow-variables](images/Import%20Variable.png)
 
 ### BigQuery
 1. On your GCP console, go to BigQuery. You can find it on **Big Data > BigQuery**
@@ -96,7 +117,9 @@ Cloud Build is a CI/CD pipeline services in Google Cloud Platform. I used Cloud 
      - Type: Cloud build configuration (YAML or JSON)
      - Location: Repository
      - Cloud Build configuration file location: cloudbuild.yaml
-4. Click **CREATE** after all needed fields filled 
+4. Dont forget to fill Variable on **Advanced** section. In this project, I set `_GCS_BUCKET` variable with Composer's GCS Bucket name which can be accessed on `cloudbuild.yaml` by `${_GCS_BUCKET}`
+![cloud-build-variable](images/Add%20Cloud%20Build%20Variable.png)
+5. Click **CREATE** after all needed fields filled 
 
 ![cloud-build-config](images/Cloud%20Build%20Config.png)
 
