@@ -54,14 +54,22 @@ After the environment successfully created from the previous steps. Now its time
    ```js
     {
       "PROJECT_ID": "",
-      "GCS_TEMP_LOCATION": "gs://..../tmp",
+      "GCS_TEMP_LOCATION": "",
       "BUCKET_NAME": "",
-      "ALL_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.table_id",
-      "GCS_STG_LOCATION": "gs://....../staging",
-      "MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE": "dataset_id.table_id",
-      "EVENTS_BQ_TABLE": "dataset_id.table_id"
+      "ALL_KEYWORDS_BQ_OUTPUT_TABLE": "",
+      "GCS_STG_LOCATION": "",
+      "MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE": "",
+      "EVENTS_BQ_TABLE": ""
     }
    ```
+   - `PROJECT_ID` : your GCP project ID
+   - `GCS_TEMP_LOCATION`: temp location to store data before loaded to BigQuery. The format is `gs://` followed by your bucket and object name
+   - `BUCKET_NAME` : name of your GCS bucket
+   - `ALL_KEYWORDS_BQ_OUTPUT_TABLE` : output table in BigQuery to store keyword search data. The value format is `dataset_id.table_id`
+   - `GCS_STG_LOCATION`: staging location to store data before loaded to BigQuery. The format is `gs://` followed by your bucket and object name
+   - `MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE`: output table in BigQuery to store most searched keyword data. The value format is `dataset_id.table_id`
+   - `EVENTS_BQ_TABLE`: output table in BigQuery to store event data from reverse engineering result. The value format is `dataset_id.table_id`
+   
 3. Go to **Admin > Variables**
 4. **Choose File** then click **Import Variables**
 ![airflow-variables](images/Import%20Variable.png)
