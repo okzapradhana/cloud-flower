@@ -48,6 +48,7 @@ def keywords_search_dag():
       py_interpreter='python3',
       pipeline_options=pipeline_options,
       dataflow_config=DataflowConfiguration(
+        job_name="job_keyword_search_{{ ds_nodash }}",
         project_id=PROJECT_ID, 
         location="asia-south1",
         wait_until_finished=True
@@ -67,4 +68,4 @@ def keywords_search_dag():
 
     start >> dataflow_task >> trigger_next_dag >> end
 
-keywords_search_etl = keywords_search_dag()
+keyword_search_etl = keywords_search_dag()
