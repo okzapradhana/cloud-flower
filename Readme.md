@@ -134,6 +134,11 @@ Cloud Build is a CI/CD pipeline services in Google Cloud Platform. I used Cloud 
 ## BigQuery Output Table
 This ETL process will produces 3 tables in BigQuery, which is:
 1. event
+   - This table contains event table as result from reverse engineering process to backfill/restore some missing data at transactional table from data warehouse table. 
 2. keyword_searches
+   - This table contains information about user's keyword search on platform from 10 March until 15 March 2021. I used partitioned table on this table with `Day` as the partition type.
 3. most_searched_keywords
+   - This table contains most searched keyword from keyword_searches table 
+
+Output:
 ![bq-output](images/BigQuery%20Output%20Table.png)
