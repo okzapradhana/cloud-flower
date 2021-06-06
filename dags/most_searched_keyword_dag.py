@@ -24,40 +24,42 @@ GCS_STG_LOCATION = Variable.get('GCS_STG_LOCATION')
 KEYWORDS_BQ_TABLE = Variable.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE')
 INPUT_TABLE = f'{PROJECT_ID}:{KEYWORDS_BQ_TABLE}'
 
+
 @dag(
-    default_args=default_args, 
-    schedule_interval='0 6 * * *', 
-    start_date=days_ago(1), 
+    default_args=default_args,
+    schedule_interval='0 6 * * *',
+    start_date=days_ago(1),
     tags=['dataflow-job']
 )
 def most_searched_keyword_dag():
     pipeline_options = {
-      'tempLocation': GCS_TEMP_LOCATION,
-      'inputTable': INPUT_TABLE,
-      'output': OUTPUT,
-      'stagingLocation': GCS_STG_LOCATION,
-      'project': PROJECT_ID,
+        'tempLocation': GCS_TEMP_LOCATION,
+        'inputTable': INPUT_TABLE,
+        'output': OUTPUT,
+        'stagingLocation': GCS_STG_LOCATION,
+        'project': PROJECT_ID,
     }
 
     dataflow_task = BeamRunPythonPipelineOperator(
-      task_id='get_most_searched_keyword',
-      runner='DataflowRunner',
-      gcp_conn_id='google_cloud_default',
-      py_file=PY_FILE,
-      py_requirements=['apache-beam[gcp]==2.29.0'],
-      py_system_site_packages=True,
-      py_interpreter='python3',
-      pipeline_options=pipeline_options,
-      dataflow_config=DataflowConfiguration(
-        project_id=PROJECT_ID, 
-        location="asia-south1",
-        wait_until_finished=True
-      )
+        task_id='get_most_searched_keyword',
+        runner='DataflowRunner',
+        gcp_conn_id='google_cloud_default',
+        py_file=PY_FILE,
+        py_requirements=['apache-beam[gcp]==2.29.0'],
+        py_system_site_packages=True,
+        py_interpreter='python3',
+        pipeline_options=pipeline_options,
+        dataflow_config=DataflowConfiguration(
+            project_id=PROJECT_ID,
+            location="asia-south1",
+            wait_until_finished=True
+        )
     )
 
     start = DummyOperator(task_id='start')
     end = DummyOperator(task_id='end')
 
     start >> dataflow_task >> end
-  
+
+
 most_searched_keyword_etl = most_searched_keyword_dag()
