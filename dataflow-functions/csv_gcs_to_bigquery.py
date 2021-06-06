@@ -30,8 +30,6 @@ def run(argv=None):
   parser.add_argument('--project', dest='project_id', required=True,
                         help='Project ID which GCP linked on.')
   known_args, pipeline_args = parser.parse_known_args(argv)
-  print('Pipeline Arguments: ', pipeline_args)
-  print('Known Args: ', known_args)
   p_options = pipeline_options.PipelineOptions(
                 pipeline_args, 
                 temp_location=known_args.gcs_temp_location,
