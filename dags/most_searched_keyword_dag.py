@@ -12,10 +12,11 @@ default_args = {
     'email': 'datokza@gmail.com',
 }
 
+COMPOSER_BUCKET_NAME = Variable.get('COMPOSER_BUCKET_NAME')
 BUCKET_NAME = Variable.get('BUCKET_NAME')
 OUTPUT = Variable.get('MOST_SEARCHED_KEYWORDS_BQ_OUTPUT_TABLE')
 PY_FILE = (
-    f'gs://{BUCKET_NAME}/dataflow-functions/bigquery_to_bigquery.py' if Variable.get('ENVIRONMENT') == 'production'
+    f'gs://{COMPOSER_BUCKET_NAME}/dataflow-functions/bigquery_to_bigquery.py' if Variable.get('ENVIRONMENT') == 'production'
     else f"{os.path.dirname(configuration.conf.get('core', 'dags_folder'))}/dataflow-functions/bigquery_to_bigquery.py")
 
 PROJECT_ID = Variable.get('PROJECT_ID')
