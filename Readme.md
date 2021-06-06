@@ -131,6 +131,9 @@ Cloud Build is a CI/CD pipeline services in Google Cloud Platform. I used Cloud 
 
 ![cloud-build-config](images/Cloud%20Build%20Config.png)
 
+If your Cloud Build runs successfully, you will see **green mark** and when you click those icon. You will see this:
+![success-cloud-build](images/Google%20Cloud%20Build%20Run%20Successfully.png) 
+
 ## BigQuery Output Table
 This ETL process will produces 3 tables in BigQuery, which is:
 1. event
@@ -140,5 +143,5 @@ This ETL process will produces 3 tables in BigQuery, which is:
 3. most_searched_keywords
    - This table contains most searched keyword from keyword_searches table 
 
-Output:
+Output: <br>
 ![bq-output](images/BigQuery%20Output%20Table.png)

@@ -12,7 +12,6 @@ default_args = {
 PROJECT_ID = Variable.get('PROJECT_ID')
 KEYWORDS_BQ_TABLE = Variable.get('ALL_KEYWORDS_BQ_OUTPUT_TABLE')
 EVENTS_BQ_TABLE = Variable.get('EVENTS_BQ_TABLE')
-PRODUCTS_BQ_TABLE = Variable.get('PRODUCTS_BQ_TABLE')
 
 @dag(
     default_args=default_args, 
